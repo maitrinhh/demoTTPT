@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distributed Weather Data Aggregator</title>
+</head>
+<body>
+    <h1>Temperature Data Aggregation</h1>
+
+    <!-- Khu vực hiển thị kết quả -->
+    <div>
+        <h2>Nhiệt độ trung bình tổng thể: <span id="avgTemp">Đang tải...</span></h2>
+    </div>
+
+    <!-- Nút để gửi yêu cầu lấy dữ liệu -->
+    <button id="fetchDataBtn">Lấy dữ liệu</button>
+
+    <script>
+        document.getElementById('fetchDataBtn').addEventListener('click', async () => {
+            try {
+                // Gửi yêu cầu đến dịch vụ điều phối để lấy nhiệt độ trung bình
+                const response = await fetch('http://localhost:4000/aggregateData');
+                const data = await response.json();
+
+                // Hiển thị nhiệt độ trung bình trên giao diện
+                document.getElementById('avgTemp').textContent = data.overallAvgTemp.toFixed(2) + '°C';
+            } catch (error) {
+                console.error('Lỗi khi lấy dữ liệu:', error);
+                document.getElementById('avgTemp').textContent = 'Lỗi khi lấy dữ liệu';
+            }
+        });
+    </script>
+</body>
+</html>
